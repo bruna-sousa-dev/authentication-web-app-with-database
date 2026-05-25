@@ -1,15 +1,26 @@
+![Python](https://img.shields.io/badge/Python-3.11-blue)
+![Flask](https://img.shields.io/badge/Flask-API-black)
+![SQLite](https://img.shields.io/badge/SQLite-Database-blue)
+![SQLAlchemy](https://img.shields.io/badge/SQLAlchemy-ORM-red)
+![Docker](https://img.shields.io/badge/Docker-Containerized-blue)
+![Gunicorn](https://img.shields.io/badge/Gunicorn-WSGI-green)
+![Render](https://img.shields.io/badge/Deploy-Render-purple)
+![GitHub Pages](https://img.shields.io/badge/Frontend-GitHub%20Pages-black)
+![License](https://img.shields.io/badge/License-MIT-blue)
+![Status](https://img.shields.io/badge/Status-Concluído-brightgreen)
+
 # Aplicação WEB Fullstack para Autenticação de Usuários 
 
-**Solução Full Stack desacoplada para autenticação de usuários com gerenciamento de banco de dados PostgreSQL.**
+**Solução Full Stack desacoplada para autenticação de usuários com persistência em banco de dados SQLite.**
 
-🔗 [Clique aqui para testar a aplicação](https://bruna-sousa-dev.github.io/fullstack-authentication-web-app-with-database)
+🔗 [Clique aqui para testar a aplicação](https://bruna-sousa-dev.github.io/authentication-web-app-with-database)
 
-🔗 [Clique aqui para acessar a imagem Docker do backend](https://hub.docker.com/r/brunasousadev/fullstackauthenticationwebappwithdatabase)
+🔗 [Clique aqui para acessar a imagem Docker do backend](https://hub.docker.com/r/brunasousadev/authenticationwebappwithdatabase)
 
 ## 🌐 Overview
 
 Esta aplicação é uma solução **Full Stack** desacoplada para autenticação e gerenciamento de usuários, composta por:
-* Uma API RESTful desenvolvida em Flask, com autenticação segura via sessões e integração com banco de dados PostgreSQL.
+* Uma API RESTful desenvolvida em Flask, com autenticação segura via sessões e integração com banco de dados SQLite.
 * Um frontend estático construído com HTML, CSS e JavaScript, que interage com a API via requisições HTTP, simulando um fluxo real de autenticação.
 * Containerização via Docker, com deploy automatizado na Render, garantindo escalabilidade e reprodutibilidade do ambiente de produção.
 
@@ -25,7 +36,7 @@ Essa estrutura separada entre cliente e servidor segue as práticas modernas de 
   - Utilização do Gunicorn como servidor WSGI
   - Implantação na Render
   - Autenticação de usuários
-  - Gerenciamento de banco de dados PostgreSQL
+  - Gerenciamento de banco de dados SQLite
 
 - **Frontend**
   - Site estático (HTML, CSS, JavaScript)
@@ -82,6 +93,7 @@ O sistema de autenticação é implementado usando [Flask-Login](https://flask-l
 - Flask-CORS
 - Flask-Session
 - Flask-SQLAlchemy
+- SQLite
 - Gunicorn
 - Docker
 - Werkzeug Security (Password Hashing)
@@ -101,6 +113,9 @@ O sistema de autenticação é implementado usando [Flask-Login](https://flask-l
 Este repositório demonstra o uso de **Docker** para conteinerizar uma API Flask backend, destacando boas práticas de construção e distribuição de imagens Docker.
 
 A aplicação foi **implantada na Render**, e a imagem Docker foi publicada no **Docker Hub** para facilitar a reprodutibilidade.
+
+> **Nota sobre persistência de dados na Render**  
+> Esta versão utiliza **SQLite** para simplificar o deploy e remover a dependência de um serviço PostgreSQL externo. Em containers Docker, o banco SQLite é armazenado em arquivo. Por isso, em ambientes como a Render, recomenda-se configurar um **Persistent Disk** caso seja necessário manter os dados após redeploys, reinicializações ou recriações do serviço.
 
 ---
 
@@ -249,7 +264,7 @@ Como baixar e executar:
 
 ```docker
 docker pull brunasousadev/fullstackauthenticationwebappwithdatabase
-docker run -d -p 5000:5000 brunasousadev/fullstackauthenticationwebappwithdatabase
+docker run -d -p 5000:5000 -e DATABASE_URL=sqlite:////app/app.db --name authenticationwebappwithdatabase brunasousadev/fullstackauthenticationwebappwithdatabase
 ```
 
 ---
@@ -269,9 +284,20 @@ cd backend
 docker build -t flask-auth-api .
 
 # Execute o container
-docker run -d -p 5000:5000 flask-auth-api
+docker run -d -p 5000:5000 \
+  -e DATABASE_URL=sqlite:////app/app.db \
+  flask-auth-api
 ```
 A aplicação estará disponível em http://localhost:5000
+
+Para persistir o arquivo SQLite fora do ciclo de vida do container, você pode montar um volume local:
+
+```bash
+docker run -d -p 5000:5000 \
+  -e DATABASE_URL=sqlite:////app/data/app.db \
+  -v ${PWD}/data:/app/data \
+  flask-auth-api
+```
 
 ---
 
@@ -279,7 +305,7 @@ A aplicação estará disponível em http://localhost:5000
 
 Pré-requisitos:
 * Python 3.11+
-* PostgreSQL instalado e configurado
+* SQLite, utilizado diretamente pela aplicação por meio do Flask-SQLAlchemy. Não é necessário instalar ou configurar um servidor de banco de dados externo.
 
 #### Passos:
 ```bash
@@ -289,24 +315,37 @@ cd fullstack-authentication-web-app-with-database
 cd backend
 
 # (Opcional) Crie e ative um ambiente virtual
-python -m venv venv
-source venv/bin/activate  # Linux/macOS
-venv\Scripts\activate     # Windows
+python -m venv .venv
+source .venv/bin/activate  # Linux/macOS
+.venv\Scripts\activate     # Windows
 
 # Instale as dependências
-pip install --upgrade pip
+python.exe -m pip install --upgrade pip
 pip install -r requirements.txt
 ```
 
 #### Configure as variáveis de ambiente:
-Crie um arquivo .env na root do projeto com as configurações necessárias (ou exporte diretamente no terminal):
+No diretório `backend`, copie o arquivo `.env.example` e cole uma cópia com o nome `.env`. Esse arquivo será utilizado para definir as variáveis de ambiente necessárias para a execução local da API.
+
+Exemplo:
+```bash
+cp .env.example .env
+```
+
+No Windows PowerShell:
+```powershell
+Copy-Item .env.example .env
+```
+
+Depois, confira se o arquivo `.env` contém as configurações necessárias:
 ```env
 FLASK_APP=app.py
 FLASK_ENV=development
 SECRET_KEY=sua-chave-secreta
-DATABASE_URL=postgresql://usuario:senha@localhost:5432/nomedobanco
+DATABASE_URL=sqlite:///app.db
+DEFAULT_PASSWORD=defaut-password
 ```
-Substitua `usuario`, `senha` e `nomedobanco` pelas configurações do seu PostgreSQL local.
+Essa configuração cria/utiliza o arquivo `app.db` como banco de dados local da aplicação.
 
 #### Inicialize o banco (se necessário):
 ```bash
@@ -323,11 +362,9 @@ flask run
 A aplicação estará disponível em http://localhost:5000
 
 #### Observações importantes:
-* Certifique-se de que o PostgreSQL está rodando e acessível.
-* Para desenvolvimento local, é possível usar o SQLite temporariamente ajustando a DATABASE_URL para:
-```env
-DATABASE_URL=sqlite:///app.db
-```
+* Como o projeto utiliza SQLite, não é necessário manter um serviço externo de banco de dados em execução.
+* Em ambiente Docker/Render, o banco pode ser configurado por meio da variável `DATABASE_URL=sqlite:////app/app.db`, utilizando caminho absoluto dentro do container.
+* Caso a aplicação seja redeployada na Render sem disco persistente configurado, o arquivo SQLite pode ser recriado e os dados podem ser perdidos. Para persistência real em produção, configure um Persistent Disk na Render ou utilize um banco externo gerenciado.
 * A aplicação foi projetada para permitir integração segura com frontends externos, habilitando CORS e gerenciamento de sessão via cookies.
 
 ## 🧪 Testando a API com o Postman
@@ -429,13 +466,8 @@ Implementar testes automatizados para os endpoints da API com ferramentas como p
 
 ---
 
-## 👩‍💻 Sobre a Autora
-Engenheira eletricista com especialização em Ciência de Dados e Inteligência Artificial, atuando profissionalmente no desenvolvimento de software, com foco em backend, infraestrutura e DevOps.
+## 👩‍💻 Autor
 
-Possuo experiência consolidada no desenvolvimento de APIs RESTful utilizando Flask, integrando sistemas baseados em Inteligência Artificial e realizando sua implantação em ambientes de produção com servidores VPS Linux, utilizando Nginx como proxy reverso, Gunicorn como servidor de aplicações e orquestração de serviços com Docker e Docker Compose.
+Developed by Bruna Sousa.
 
-Além disso, desenvolvo interfaces frontend estáticas que consomem essas APIs, promovendo a integração eficiente entre as camadas de apresentação e lógica de negócios.
-
-Atuo também no desenvolvimento de sistemas industriais de Internet das Coisas (IoT), com ênfase na implementação de soluções utilizando o protocolo LoRaWAN para comunicação de longa distância e baixa potência.
-
-Este repositório integra meu portfólio de projetos, com o objetivo de demonstrar competências técnicas nas áreas de conteinerização, automação de deploy e integração contínua.
+Electronic Engineer | IoT Developer | Web Developer | AI Developer

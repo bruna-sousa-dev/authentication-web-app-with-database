@@ -7,7 +7,7 @@ load_dotenv() # Lê as variáveis de embiente presentes no arquivo .env
 class ConfigAppFlask:
     
     # Chave secreta usada para proteger sessões e cookies; usa variável de ambiente ou uma chave padrão
-    SECRET_KEY = os.getenv("SECRET_KEY", "MPzkAeG7zChV2Jo3y6OvlUyzBCh54q745eUX15IcZhr")
+    SECRET_KEY = os.getenv("SECRET_KEY")
 
     # Configurações de sessão do Flask
     SESSION_TYPE = 'filesystem'  # Armazena sessões no sistema de arquivos
