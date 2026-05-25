@@ -119,3 +119,15 @@ def create_default_user_service(User, db):
         new_user = User(username = default_email, password_hash = default_password_hash)
         db.session.add(new_user)
         db.session.commit()
+
+def create_test_user_service(User, db):
+    load_dotenv()
+    default_email = "test_user@mail.com"
+    default_password = os.getenv("TEST_PASSWORD")
+    default_password_hash = generate_password_hash(default_password)
+
+    user = User.query.filter_by(username = default_email).first()
+    if not user:
+        new_user = User(username = default_email, password_hash = default_password_hash)
+        db.session.add(new_user)
+        db.session.commit()

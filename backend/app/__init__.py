@@ -3,7 +3,7 @@ from flask import Flask
 from flask_cors import CORS  # Permite requisições entre diferentes domínios (Cross-Origin Resource Sharing)
 from flask_login import LoginManager  # Gerencia autenticação de usuários
 from flask_sqlalchemy import SQLAlchemy  # ORM para interagir com bancos de dados relacionais
-from app.services.auth_service import create_default_user_service  # Função para criar um usuário padrão no banco de dados
+from app.services.auth_service import create_default_user_service, create_test_user_service  # Funções para criar usuários padrão e de teste no banco de dados
 
 # Importa configurações e funções auxiliares
 from .services.config_flask_service import ConfigAppFlask, apply_cors, configure_login_manager
@@ -38,6 +38,7 @@ def create_app():
     with app.app_context():
         db.create_all()
         create_default_user_service(User, db)
+        create_test_user_service(User, db)
 
     # Importa as rotas da aplicação
     # from app.routes import routes_auth, route_hello_world
