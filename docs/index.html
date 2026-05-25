@@ -4,42 +4,84 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="robots" content="noindex, nofollow"> <!-- Impede que os mecanismos de busca indexem a página -->
-    <title>Login</title>
+    <meta name="robots" content="noindex, nofollow">
+    <title>Login | Fullstack Authentication App</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Funnel+Display:wght@400;600;700&family=Red+Hat+Text:wght@400;500;700&display=swap" rel="stylesheet">
+
     <link rel="stylesheet" href="./assets/css/style.css">
-    <link rel="icon" type="image/x-icon" href="/favicon.ico"> 
+    <link rel="icon" type="image/x-icon" href="/favicon.ico">
 </head>
 <body>
-    
+
     <header class="header">
-        <img src="./assets/images/logo.png" alt="Logo" class="header-logo">
+        <img src="./assets/images/logo.png" alt="Logo da aplicação" class="logo">
     </header>
 
-    <div class="content">
-        <div id="test-user">
-            <h3>Utilize este usuário teste para logar</h3>
-            <span>Email: </span>
-            <span id="test-user-username">aguarde... </span>
-            <span>Senha: 123456789</span>
-        </div>
+    <main class="content">
+        <section class="login-card" aria-labelledby="login-title">
 
-        <form id="form">
-            <div>
-                <label for="email">Email: </label>
-                <input type="email" id="email" name="email" autocomplete="off">
+            <div class="login-header">
+                <p class="eyebrow">Fullstack Authentication API</p>
+                <h1 id="login-title">Acesso ao sistema</h1>
+                <p class="login-description">
+                    Informe suas credenciais para acessar a área autenticada da aplicação.
+                </p>
             </div>
-            <div>
-                <label for="password">Senha:</label>
-                <input type="password" id="password" name="password">
-            </div>
-        </form>
 
-        <button onclick="login()">Entrar</button>
-        
-    </div>
+            <div id="test-user" class="test-user-card">
+                <h2>Usuário de teste</h2>
+                <p>Utilize as credenciais abaixo para validar o fluxo de autenticação.</p>
+
+                <div class="credential-row">
+                    <span class="credential-label">Email</span>
+                    <span id="test-user-username" class="credential-value">aguarde...</span>
+                </div>
+
+                <div class="credential-row">
+                    <span class="credential-label">Senha</span>
+                    <span class="credential-value">123456789</span>
+                </div>
+            </div>
+
+            <form id="form">
+                <div class="form-group">
+                    <label for="email">Email</label>
+                    <input
+                        type="email"
+                        id="email"
+                        name="email"
+                        placeholder="Digite seu email"
+                        autocomplete="off"
+                        required
+                        pattern="[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}"
+                    >
+                    <small>Formato esperado: exemplo@dominio.com</small>
+                </div>
+
+                <div class="form-group">
+                    <label for="password">Senha</label>
+                    <input
+                        type="password"
+                        id="password"
+                        name="password"
+                        placeholder="Digite sua senha"
+                        required
+                    >
+                </div>
+
+                <button type="button" onclick="login()" class="login-btn">
+                    Entrar
+                </button>
+            </form>
+
+        </section>
+    </main>
 
     <footer class="footer">
-        <p>Bruna Sousa Dev 2025© – Todos os direitos reservados</p>
+        <p>Bruna Sousa Dev 2026© – Todos os direitos reservados</p>
         <p>Política de Privacidade | Política de Cookies</p>
     </footer>
 

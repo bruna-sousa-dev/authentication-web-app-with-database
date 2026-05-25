@@ -15,7 +15,7 @@
 
 🔗 [Clique aqui para testar a aplicação](https://bruna-sousa-dev.github.io/authentication-web-app-with-database)
 
-🔗 [Clique aqui para acessar a imagem Docker do backend](https://hub.docker.com/r/brunasousadev/authenticationwebappwithdatabase)
+🔗 [Clique aqui para acessar a imagem Docker do backend](https://hub.docker.com/r/brunasousadev/fullstackauthenticationwebappwithdatabase)
 
 ## 🌐 Overview
 

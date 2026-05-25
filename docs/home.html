@@ -5,83 +5,125 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="robots" content="noindex, nofollow">
-    <title>Home</title>
+    <title>Home | Fullstack Authentication App</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Funnel+Display:wght@400;600;700&family=Red+Hat+Text:wght@400;500;700&display=swap" rel="stylesheet">
+
     <link rel="stylesheet" href="./assets/css/style.css">
+    <link rel="icon" type="image/x-icon" href="/favicon.ico">
 </head>
 <body>
 
-    <header class="header">
-        <img src="./assets/images/logo.png" alt="Logo" class="header-logo">
+    <header class="header header-home">
+        <img src="./assets/images/logo.png" alt="Logo da aplicação" class="logo logo-home">
+
+        <div class="header-actions">
+            <button type="button" class="header-btn" onclick="visitRepo()">GitHub</button>
+            <button type="button" class="header-btn header-btn-secondary" onclick="logout()">Logout</button>
+        </div>
     </header>
 
-    <div class="content-home">
-        <div id="test-endpoints-area">
+    <main class="content-home">
+        <section id="test-endpoints-area" aria-labelledby="home-title">
 
-            <h2>Teste os endpoints da API rodando na Render</h2>
-
-            <div class="test-section">
-                <h4>Faça Hello World</h4>
-                <button onclick="hello()">/hello_world</button>
-                <p id="hello-world-response">Resposta</p>
+            <div class="home-hero">
+                <p class="eyebrow">API RESTful em Flask</p>
+                <h1 id="home-title">Teste os endpoints da API</h1>
+                <p>
+                    Esta área permite validar as principais rotas da aplicação implantada na Render,
+                    incluindo sessão ativa, autenticação, listagem, edição, registro e remoção de usuários.
+                </p>
             </div>
 
-            <div class="test-section">
-                <h4>Cheque a sessão ativa</h4>
-                <button onclick="checkSession()">/check_session</button>
-                <p id="check-session-response">Resposta</p>
+            <div class="endpoints-grid">
+
+                <article class="test-section">
+                    <span class="endpoint-method get">GET</span>
+                    <h2>Hello World</h2>
+                    <p class="endpoint-description">Valida se a API está respondendo corretamente.</p>
+                    <button type="button" onclick="hello()">/hello_world</button>
+                    <p id="hello-world-response" class="response-box">Resposta</p>
+                </article>
+
+                <article class="test-section">
+                    <span class="endpoint-method get">GET</span>
+                    <h2>Sessão ativa</h2>
+                    <p class="endpoint-description">Verifica se há uma sessão autenticada ativa.</p>
+                    <button type="button" onclick="checkSession()">/check_session</button>
+                    <p id="check-session-response" class="response-box">Resposta</p>
+                </article>
+
+                <article class="test-section">
+                    <span class="endpoint-method get">GET</span>
+                    <h2>Debug da sessão</h2>
+                    <p class="endpoint-description">Retorna informações úteis para depuração da sessão.</p>
+                    <button type="button" onclick="debugSession()">/debug_session</button>
+                    <p id="debug-session-response" class="response-box">Resposta</p>
+                </article>
+
+                <article class="test-section">
+                    <span class="endpoint-method get">GET</span>
+                    <h2>Usuários</h2>
+                    <p class="endpoint-description">Lista os usuários registrados no banco de dados.</p>
+                    <button type="button" onclick="listUsers()">/users</button>
+                    <p id="users-response" class="response-box">Resposta</p>
+                </article>
+
+                <article class="test-section">
+                    <span class="endpoint-method get">GET</span>
+                    <h2>Usuário de teste</h2>
+                    <p class="endpoint-description">Obtém as informações do usuário padrão de teste.</p>
+                    <button type="button" onclick="getTestUser()">/get_test_user</button>
+                    <p id="get-test-user-response" class="response-box">Resposta</p>
+                </article>
+
+                <article class="test-section">
+                    <span class="endpoint-method put">PUT</span>
+                    <h2>Editar usuário</h2>
+                    <p class="endpoint-description">Executa a edição do usuário de teste cadastrado.</p>
+                    <button type="button" onclick="editUser()">/edit_user</button>
+                    <p id="edit-user-response" class="response-box">Resposta</p>
+                </article>
+
+                <article class="test-section">
+                    <span class="endpoint-method post">POST</span>
+                    <h2>Registrar usuário</h2>
+                    <p class="endpoint-description">Registra um novo usuário para testar a rota protegida.</p>
+                    <button type="button" onclick="registerUser()">/register</button>
+                    <p id="register-response" class="response-box">Resposta</p>
+                </article>
+
+                <article class="test-section">
+                    <span class="endpoint-method delete">DELETE</span>
+                    <h2>Deletar usuário</h2>
+                    <p class="endpoint-description">Remove o usuário de teste do banco de dados.</p>
+                    <button type="button" onclick="delUser()">/del_user</button>
+                    <p id="del-user-response" class="response-box">Resposta</p>
+                </article>
+
+                <article class="test-section action-card">
+                    <span class="endpoint-method action">ACTION</span>
+                    <h2>Logout</h2>
+                    <p class="endpoint-description">Finaliza a sessão autenticada atual.</p>
+                    <button type="button" onclick="logout()">/logout</button>
+                </article>
+
+                <article class="test-section action-card">
+                    <span class="endpoint-method action">REPO</span>
+                    <h2>Repositório</h2>
+                    <p class="endpoint-description">Acesse o código-fonte completo do projeto.</p>
+                    <button type="button" onclick="visitRepo()">GitHub</button>
+                </article>
+
             </div>
 
-            <div class="test-section">
-                <h4>Debugue a sessão ativa</h4>
-                <button onclick="debugSession()">/debug_session</button>
-                <p id="debug-session-response">Resposta</p>
-            </div>
-
-            <div class="test-section">
-                <h4>Liste os usuários</h4>
-                <button onclick="listUsers()">/users</button>
-                <p id="users-response">Resposta</p>
-            </div>
-
-            <div class="test-section">
-                <h4>Obter usuário de teste</h4>
-                <button onclick="getTestUser()">/get_test_user</button>
-                <p id="get-test-user-response">Resposta</p>
-            </div>
-
-            <div class="test-section">
-                <h4>Edite o usuário de teste</h4>
-                <button onclick="editUser()">/edit_user</button>
-                <p id="edit-user-response">Resposta</p>
-            </div>
-
-            <div class="test-section">
-                <h4>Registre um usuário</h4>
-                <button onclick="registerUser()">/register</button>
-                <p id="register-response">Resposta</p>
-            </div>
-
-            <div class="test-section">
-                <h4>Delete o usuário de teste</h4>
-                <button onclick="delUser()">/del_user</button>
-                <p id="del-user-response">Resposta</p>
-            </div>
-
-            <div class="test-section">
-                <h4>Faça o logout</h4>
-                <button onclick="logout()">/logout</button>
-            </div>
-
-            <div class="test-section">
-                <h4>Visite o repo</h4>
-                <button onclick="visitRepo()">GitHub</button>
-            </div>
-
-        </div>
-    </div>
+        </section>
+    </main>
 
     <footer class="footer">
-        <p>Bruna Sousa Dev 2025© – Todos os direitos reservados</p>
+        <p>Bruna Sousa Dev 2026© – Todos os direitos reservados</p>
         <p>Política de Privacidade | Política de Cookies</p>
     </footer>
 
